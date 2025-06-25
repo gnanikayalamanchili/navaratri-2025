@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saree Booking Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .saree-details {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: white;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .saree-details.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .detail-item {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .detail-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌸 Saree Booking 🌸</h1>
+            <p>Select your perfect saree for the deity</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="sareeForm">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gotram">Gotram *</label>
+                    <input type="text" id="gotram" name="gotram" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sareeCode">Select Saree Code *</label>
+                    <select id="sareeCode" name="sareeCode" required>
+                        <option value="">-- Loading saree codes... --</option>
+                    </select>
+                    <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+                        <p style="color: #666; font-style: italic; margin-top: 10px;">🔄 Loading latest saree data...</p>
+                    </div>
+                </div>
+
+                <div class="saree-details" id="sareeDetails">
+                    <p>Select a saree code to view details</p>
+                </div>
+
+                <button type="submit" class="submit-btn">Book Saree</button>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <button type="button" onclick="refreshSareeData()" class="refresh-btn" 
+                            style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); 
+                                   color: #333; padding: 10px 20px; border: none; border-radius: 20px; 
+                                   font-size: 0.9em; cursor: pointer; transition: all 0.3s ease;">
+                        🔄 Refresh Saree List
+                    </button>
+                </div>
+                
+                <div class="success-message" id="successMessage">
+                    ✨ Booking successful! Your saree has been reserved. ✨
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Replace with your Google Apps Script URLs
+        const GOOGLE_SCRIPT_URLS = {
+            GET_SAREES: 'https://script.google.com/macros/s/AKfycbyoDYRwhd6onmtQp95AZIL7Si8D0CnGddyZWko80-ZxxPm4W-_ttZxgwQo94NXSikwd/exec',
+            SUBMIT_BOOKING: 'https://script.google.com/macros/s/AKfycbzeyiuuUBBS4u0jeIU-4iDloXjlzrHgEaS_6FVqfPZi-MSo2F70SNbnFjQ-SpOow8ul/exec'
+        };
+
+        // Store saree data and booked sarees
+        let sareeData = {};
+        let bookedSarees = [];
+
+        // Initialize the form
+        async function initializeForm() {
+            showLoading(true);
+            try {
+                await loadSareeData();
+                populateSareeDropdown();
+                setupEventListeners();
+                showLoading(false);
+                
+                // Show success message for data load
+                const select = document.getElementById('sareeCode');
+                const optionCount = Object.keys(sareeData).length;
+                select.querySelector('option').textContent = `-- Choose from ${optionCount} available sarees --`;
+                
+            } catch (error) {
+                console.error('Error initializing form:', error);
+                showLoading(false);
+                document.getElementById('sareeCode').innerHTML = '<option value="">❌ Error loading saree data - Please refresh</option>';
+                alert('Unable to load saree data. Please check your internet connection and refresh the page.');
+            }
+        }
+
+        // Show/hide loading indicator
+        function showLoading(show) {
+            const loading = document.getElementById('loadingIndicator');
+            loading.style.display = show ? 'block' : 'none';
+        }
+
+        // Load saree data from Google Sheets
+        async function loadSareeData() {
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URLS.GET_SAREES);
+                const data = await response.json();
+                
+                if (data.result === 'success') {
+                    sareeData = data.sarees;
+                    console.log('Loaded saree data:', sareeData);
+                } else {
+                    throw new Error('Failed to load saree data');
+                }
+            } catch (error) {
+                console.error('Error loading saree data:', error);
+               
+            }
+        }
+
+        // Populate the saree dropdown
+        function populateSareeDropdown() {
+            const select = document.getElementById('sareeCode');
+            
+            // Clear existing options except the first one
+            while (select.children.length > 1) {
+                select.removeChild(select.lastChild);
+            }
+
+            // Add available saree codes
+            Object.keys(sareeData).forEach(code => {
+                if (!bookedSarees.includes(code)) {
+                    const option = document.createElement('option');
+                    option.value = code;
+                    option.textContent = code;
+                    select.appendChild(option);
+                }
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const sareeSelect = document.getElementById('sareeCode');
+            const form = document.getElementById('sareeForm');
+
+            sareeSelect.addEventListener('change', function() {
+                const selectedCode = this.value;
+                displaySareeDetails(selectedCode);
+            });
+
+            form.addEventListener('submit', handleFormSubmit);
+        }
+
+        // Display saree details
+        function displaySareeDetails(code) {
+            const detailsDiv = document.getElementById('sareeDetails');
+            
+            if (!code || !sareeData[code]) {
+                detailsDiv.innerHTML = '<p>Select a saree code to view details</p>';
+                detailsDiv.classList.remove('show');
+                return;
+            }
+
+            const saree = sareeData[code];
+            detailsDiv.innerHTML = `
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Price</div>
+                        <div class="detail-value">${saree.price}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Day</div>
+                        <div class="detail-value">${saree.day}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Date</div>
+                        <div class="detail-value">${saree.date}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Deity</div>
+                        <div class="detail-value">${saree.deity}</div>
+                    </div>
+                </div>
+            `;
+            detailsDiv.classList.add('show');
+        }
+
+        // Handle form submission
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const selectedSareeCode = formData.get('sareeCode');
+            
+            if (!selectedSareeCode) {
+                alert('Please select a saree code');
+                return;
+            }
+
+            // Disable submit button during submission
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                // Prepare data for Google Sheets
+                const bookingData = {
+                    timestamp: new Date().toLocaleString(),
+                    name: formData.get('name'),
+                    phone: formData.get('phone'),
+                    email: formData.get('email'),
+                    gotram: formData.get('gotram'),
+                    sareeCode: selectedSareeCode,
+                    price: sareeData[selectedSareeCode].price,
+                    day: sareeData[selectedSareeCode].day,
+                    date: sareeData[selectedSareeCode].date,
+                    deity: sareeData[selectedSareeCode].deity
+                };
+
+                // Send to Google Sheets
+                const response = await fetch(GOOGLE_SCRIPT_URLS.SUBMIT_BOOKING, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bookingData)
+                });
+
+                // Add to booked sarees
+                bookedSarees.push(selectedSareeCode);
+                
+                // Update dropdown
+                populateSareeDropdown();
+                
+                // Clear form
+                e.target.reset();
+                
+                // Clear saree details
+                displaySareeDetails('');
+                
+                // Show success message
+                const successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('There was an error submitting your booking. Please try again.');
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Book Saree';
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeForm);
+
+        // Refresh saree data function
+        async function refreshSareeData() {
+            const refreshBtn = document.querySelector('.refresh-btn');
+            refreshBtn.textContent = '🔄 Refreshing...';
+            refreshBtn.disabled = true;
+            
+            try {
+                await loadSareeData();
+                populateSareeDropdown();
+                
+                // Clear current selection and details
+                document.getElementById('sareeCode').value = '';
+                displaySareeDetails('');
+                
+                const optionCount = Object.keys(sareeData).length;
+                document.getElementById('sareeCode').querySelector('option').textContent = 
+                    `-- Choose from ${optionCount} available sarees --`;
+                
+                // Show temporary success message
+                refreshBtn.textContent = '✅ Updated!';
+                setTimeout(() => {
+                    refreshBtn.textContent = '🔄 Refresh Saree List';
+                    refreshBtn.disabled = false;
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error refreshing data:', error);
+                refreshBtn.textContent = '❌ Failed';
+                setTimeout(() => {
+                    refreshBtn.textContent = '🔄 Refresh Saree List';
+                    refreshBtn.disabled = false;
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
