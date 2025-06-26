@@ -244,8 +244,8 @@
     <script>
         // Configuration - Replace with your Google Apps Script URLs
         const GOOGLE_SCRIPT_URLS = {
-            GET_SAREES: 'https://script.google.com/macros/s/AKfycbyoDYRwhd6onmtQp95AZIL7Si8D0CnGddyZWko80-ZxxPm4W-_ttZxgwQo94NXSikwd/exec',
-            SUBMIT_BOOKING: 'https://script.google.com/macros/s/AKfycbzeyiuuUBBS4u0jeIU-4iDloXjlzrHgEaS_6FVqfPZi-MSo2F70SNbnFjQ-SpOow8ul/exec'
+            GET_SAREES: 'https://script.google.com/macros/s/AKfycbzBj6lxNlZu3CjP7eZrIFBf2tfn2uJ2nzZVulQtDqw1UWfD-oqPYfr--fsRiSl58sg/exec',
+            SUBMIT_BOOKING: 'https://script.google.com/macros/s/AKfycbwPFozx3wqOcrn1li724zwvaykwTi-BQOyYY5uVaEEwle-qgg6NlMtfooQhFaI01MD3/exec'
         };
 
         // Store saree data and booked sarees
@@ -387,7 +387,7 @@
             detailsDiv.classList.add('show');
         }
 
-        // Handle form submission
+        // Handle form submission with better error handling
         async function handleFormSubmit(e) {
             e.preventDefault();
             
@@ -426,29 +426,8 @@
                     deity: sareeData[selectedSareeCode].deity
                 };
 
-                // Send to Google Sheets
-                const response = await fetch(GOOGLE_SCRIPT_URLS.SUBMIT_BOOKING, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(bookingData)
-                });
-
-                // Check if the submission was successful
-                let result;
-                try {
-                    result = await response.json();
-                } catch (e) {
-                    // If we can't parse JSON, assume success (for no-cors mode)
-                    result = { result: 'success' };
-                }
-
-                if (result.result === 'error' && result.message === 'Saree already booked') {
-                    alert('Sorry, this saree was just booked by someone else. Please select another saree.');
-                    await refreshSareeData(); // Refresh to get latest data
-                    return;
-                }
+                // Use a different approach for form submission to avoid CORS issues
+                await submitFormData(bookingData);
 
                 // Add to booked sarees locally
                 bookedSarees.push(selectedSareeCode);
@@ -479,6 +458,45 @@
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Book Saree';
             }
+        }
+
+        // Alternative form submission method to handle CORS issues
+        async function submitFormData(data) {
+            return new Promise((resolve, reject) => {
+                // Create a hidden form for submission
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = GOOGLE_SCRIPT_URLS.SUBMIT_BOOKING;
+                form.style.display = 'none';
+                
+                // Add data as hidden inputs
+                Object.keys(data).forEach(key => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = data[key];
+                    form.appendChild(input);
+                });
+                
+                // Create hidden iframe for form submission
+                const iframe = document.createElement('iframe');
+                iframe.name = 'hidden_iframe';
+                iframe.style.display = 'none';
+                iframe.onload = function() {
+                    // Form submitted successfully
+                    setTimeout(() => {
+                        document.body.removeChild(form);
+                        document.body.removeChild(iframe);
+                        resolve();
+                    }, 1000);
+                };
+                
+                form.target = 'hidden_iframe';
+                
+                document.body.appendChild(iframe);
+                document.body.appendChild(form);
+                form.submit();
+            });
         }
 
         // Initialize when page loads
