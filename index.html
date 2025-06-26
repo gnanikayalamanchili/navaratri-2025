@@ -263,8 +263,8 @@
                 
                 // Show success message for data load
                 const select = document.getElementById('sareeCode');
-                const optionCount = Object.keys(sareeData).length;
-                select.querySelector('option').textContent = `-- Choose from ${optionCount} available sarees --`;
+                const availableCount = Object.keys(sareeData).filter(code => !bookedSarees.includes(code)).length;
+                select.querySelector('option').textContent = `-- Choose from ${availableCount} available sarees --`;
                 
             } catch (error) {
                 console.error('Error initializing form:', error);
@@ -288,13 +288,16 @@
                 
                 if (data.result === 'success') {
                     sareeData = data.sarees;
+                    // Get booked sarees from server response
+                    bookedSarees = data.bookedSarees || [];
                     console.log('Loaded saree data:', sareeData);
+                    console.log('Booked sarees:', bookedSarees);
                 } else {
                     throw new Error('Failed to load saree data');
                 }
             } catch (error) {
                 console.error('Error loading saree data:', error);
-               
+                throw error;
             }
         }
 
@@ -307,15 +310,27 @@
                 select.removeChild(select.lastChild);
             }
 
-            // Add available saree codes
-            Object.keys(sareeData).forEach(code => {
-                if (!bookedSarees.includes(code)) {
-                    const option = document.createElement('option');
-                    option.value = code;
-                    option.textContent = code;
-                    select.appendChild(option);
-                }
+            // Add only available saree codes (not booked)
+            const availableCodes = Object.keys(sareeData).filter(code => !bookedSarees.includes(code));
+            
+            if (availableCodes.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = '❌ No sarees available - All booked';
+                select.appendChild(option);
+                return;
+            }
+
+            availableCodes.forEach(code => {
+                const option = document.createElement('option');
+                option.value = code;
+                option.textContent = code;
+                select.appendChild(option);
             });
+
+            // Update the placeholder text
+            const availableCount = availableCodes.length;
+            select.querySelector('option').textContent = `-- Choose from ${availableCount} available sarees --`;
         }
 
         // Setup event listeners
@@ -338,6 +353,13 @@
             if (!code || !sareeData[code]) {
                 detailsDiv.innerHTML = '<p>Select a saree code to view details</p>';
                 detailsDiv.classList.remove('show');
+                return;
+            }
+
+            // Check if saree is already booked
+            if (bookedSarees.includes(code)) {
+                detailsDiv.innerHTML = '<p style="color: #ff6b6b;">❌ This saree is no longer available</p>';
+                detailsDiv.classList.add('show');
                 return;
             }
 
@@ -377,6 +399,13 @@
                 return;
             }
 
+            // Double-check if saree is still available
+            if (bookedSarees.includes(selectedSareeCode)) {
+                alert('Sorry, this saree has already been booked by someone else. Please select another saree.');
+                await refreshSareeData(); // Refresh to get latest data
+                return;
+            }
+
             // Disable submit button during submission
             const submitBtn = document.querySelector('.submit-btn');
             submitBtn.disabled = true;
@@ -400,17 +429,31 @@
                 // Send to Google Sheets
                 const response = await fetch(GOOGLE_SCRIPT_URLS.SUBMIT_BOOKING, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(bookingData)
                 });
 
-                // Add to booked sarees
+                // Check if the submission was successful
+                let result;
+                try {
+                    result = await response.json();
+                } catch (e) {
+                    // If we can't parse JSON, assume success (for no-cors mode)
+                    result = { result: 'success' };
+                }
+
+                if (result.result === 'error' && result.message === 'Saree already booked') {
+                    alert('Sorry, this saree was just booked by someone else. Please select another saree.');
+                    await refreshSareeData(); // Refresh to get latest data
+                    return;
+                }
+
+                // Add to booked sarees locally
                 bookedSarees.push(selectedSareeCode);
                 
-                // Update dropdown
+                // Update dropdown to remove the booked saree
                 populateSareeDropdown();
                 
                 // Clear form
@@ -423,10 +466,10 @@
                 const successMessage = document.getElementById('successMessage');
                 successMessage.style.display = 'block';
                 
-                // Hide success message after 3 seconds
+                // Hide success message after 5 seconds
                 setTimeout(() => {
                     successMessage.style.display = 'none';
-                }, 3000);
+                }, 5000);
 
             } catch (error) {
                 console.error('Error submitting form:', error);
@@ -454,10 +497,6 @@
                 // Clear current selection and details
                 document.getElementById('sareeCode').value = '';
                 displaySareeDetails('');
-                
-                const optionCount = Object.keys(sareeData).length;
-                document.getElementById('sareeCode').querySelector('option').textContent = 
-                    `-- Choose from ${optionCount} available sarees --`;
                 
                 // Show temporary success message
                 refreshBtn.textContent = '✅ Updated!';
