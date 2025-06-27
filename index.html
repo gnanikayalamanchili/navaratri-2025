@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saree Booking Form</title>
+    <title>Dussehra Pooja Sponsorship & Ammavari Vastra Samarpana 2025</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ffb347 0%, #ff8c42 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -21,7 +21,7 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            background: white;
+            background: #fdf5e6;
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
@@ -34,10 +34,30 @@
             text-align: center;
         }
 
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255,255,255,0.3);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .header h1 {
-            font-size: 2.5em;
+            font-size: 2.2em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
         }
 
         .form-container {
@@ -56,20 +76,27 @@
             font-size: 1.1em;
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 15px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s ease;
+            background: white;
         }
 
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #ff8c42;
+            box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
             transform: translateY(-2px);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
         }
 
         .saree-details {
@@ -120,7 +147,7 @@
         }
 
         .submit-btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
             color: white;
             padding: 18px 40px;
             border: none;
@@ -136,7 +163,7 @@
 
         .submit-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+            box-shadow: 0 10px 20px rgba(255, 140, 66, 0.3);
         }
 
         .submit-btn:disabled {
@@ -156,6 +183,23 @@
             font-weight: bold;
             margin-top: 20px;
             display: none;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #ffb347 0%, #ffa726 100%);
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 179, 71, 0.3);
         }
 
         @keyframes fadeInUp {
@@ -178,17 +222,36 @@
         .form-group:nth-child(3) { animation-delay: 0.3s; }
         .form-group:nth-child(4) { animation-delay: 0.4s; }
         .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-group:nth-child(6) { animation-delay: 0.6s; }
+        .form-group:nth-child(7) { animation-delay: 0.7s; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌸 Saree Booking 🌸</h1>
-            <p>Select your perfect saree for the deity</p>
+            <div class="logo">
+                <!-- Replace the src with your actual logo image URL -->
+                <img src="logo.jpg" alt="Sai Mandir USA NY Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'color: #ff8c42; font-weight: bold; font-size: 14px;\'>LOGO</div>'">
+            </div>
+            <h2>Dussehra Pooja Sponsorship <br> Ammavari Vastra Samarpana 2025</h2>
         </div>
         
         <div class="form-container">
             <form id="sareeForm">
+                <div class="form-group">
+                    <label for="sareeCode">Select Saree Code *</label>
+                    <select id="sareeCode" name="sareeCode" required>
+                        <option value="">-- Loading saree codes... --</option>
+                    </select>
+                    <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+                        <p style="color: #666; font-style: italic; margin-top: 10px;">🔄 Loading latest saree data...</p>
+                    </div>
+                </div>
+
+                <div class="saree-details" id="sareeDetails">
+                    <p>Select a saree code to view details</p>
+                </div>
+
                 <div class="form-group">
                     <label for="name">Full Name *</label>
                     <input type="text" id="name" name="name" required>
@@ -210,26 +273,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="sareeCode">Select Saree Code *</label>
-                    <select id="sareeCode" name="sareeCode" required>
-                        <option value="">-- Loading saree codes... --</option>
-                    </select>
-                    <div class="loading-indicator" id="loadingIndicator" style="display: none;">
-                        <p style="color: #666; font-style: italic; margin-top: 10px;">🔄 Loading latest saree data...</p>
-                    </div>
-                </div>
-
-                <div class="saree-details" id="sareeDetails">
-                    <p>Select a saree code to view details</p>
+                    <label for="familyDetails">Family Details *</label>
+                    <textarea id="familyDetails" name="familyDetails" required 
+                              placeholder="Please provide family details (e.g., spouse name, children names, parents names, etc.)"></textarea>
                 </div>
 
                 <button type="submit" class="submit-btn">Book Saree</button>
                 
-                <div style="text-align: center; margin: 20px 0;">
-                    <button type="button" onclick="refreshSareeData()" class="refresh-btn" 
-                            style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); 
-                                   color: #333; padding: 10px 20px; border: none; border-radius: 20px; 
-                                   font-size: 0.9em; cursor: pointer; transition: all 0.3s ease;">
+                <div style="text-align: center; margin: 20px 0;display: none;">
+                    <button type="button" onclick="refreshSareeData()" class="refresh-btn">
                         🔄 Refresh Saree List
                     </button>
                 </div>
@@ -423,7 +475,8 @@
                     price: sareeData[selectedSareeCode].price,
                     day: sareeData[selectedSareeCode].day,
                     date: sareeData[selectedSareeCode].date,
-                    deity: sareeData[selectedSareeCode].deity
+                    deity: sareeData[selectedSareeCode].deity,
+                    familyDetails: formData.get('familyDetails')
                 };
 
                 // Use a different approach for form submission to avoid CORS issues
