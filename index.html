@@ -138,12 +138,8 @@
             min-height: 0;
         }
 
-        .details-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    width: 100%;
-}
+
+
 
 
 
@@ -155,6 +151,7 @@
             backdrop-filter: blur(10px);
         }
 
+
         .detail-label {
             font-size: 0.9em;
             opacity: 0.8;
@@ -165,6 +162,7 @@
             font-size: 1.2em;
             font-weight: bold;
         }
+
 
         .submit-btn {
             background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
@@ -265,51 +263,53 @@
         .form-group:nth-child(7) {
             animation-delay: 0.7s;
         }
+
         /* Responsive enhancements */
-@media (max-width: 600px) {
-    .form-container {
-        padding: 20px;
-    }
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 20px;
+            }
 
-    .header {
-        padding: 20px;
-    }
+            .header {
+                padding: 20px;
+            }
 
-    .header h2 {
-        font-size: 1.4em;
-    }
+            .header h2 {
+                font-size: 1.4em;
+            }
 
-    .logo-round img,
-    .header img {
-        width: 60px;
-        height: 60px;
-    }
+            .logo-round img,
+            .header img {
+                width: 60px;
+                height: 60px;
+            }
 
-    .details-grid {
-        grid-template-columns: 1fr;
-    }
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
 
-    .submit-btn {
-        font-size: 1em;
-        padding: 14px 20px;
-    }
+            .submit-btn {
+                font-size: 1em;
+                padding: 14px 20px;
+            }
 
-    .form-group {
-        margin-bottom: 20px;
-    }
-}
+            .form-group {
+                margin-bottom: 20px;
+            }
+        }
 
-/* Scalable typography */
-.header h1, .header h2 {
-    font-size: clamp(1.2rem, 4vw, 2rem);
-}
-
+        /* Scalable typography */
+        .header h1,
+        .header h2 {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="header" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px;">
+        <div class="header"
+            style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px;">
 
             <div style="display: flex; align-items: center; justify-content: center; gap: 24px;">
                 <div class="logo-round" style="display: flex; align-items: center; justify-content: center;">
@@ -514,24 +514,29 @@
 
             const saree = sareeData[code];
             detailsDiv.innerHTML = `
-                <div class="details-grid">
-                    <div class="detail-item">
-                        <div class="detail-label">Price</div>
-                        <div class="detail-value">${saree.price}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Day</div>
-                        <div class="detail-value">${saree.day}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Date</div>
-                        <div class="detail-value">${new Date(saree.date).toDateString()}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Deity</div>
-                        <div class="detail-value">${saree.deity}</div>
-                    </div>
-                </div>
+               <table style="width: 100%; border-collapse: collapse; text-align: center;">
+    <tr>
+        <td style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+            <div class="detail-label">Price</div>
+            <div class="detail-value">${saree.price}</div>
+        </td>
+        <td style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+            <div class="detail-label">Day</div>
+            <div class="detail-value">${saree.day}</div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+            <div class="detail-label">Date</div>
+            <div class="detail-value">${new Date(saree.date).toDateString()}</div>
+        </td>
+        <td style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+            <div class="detail-label">Deity</div>
+            <div class="detail-value">${saree.deity}</div>
+        </td>
+    </tr>
+</table>
+
             `;
             detailsDiv.classList.add('show');
         }
