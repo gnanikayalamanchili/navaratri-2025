@@ -275,7 +275,7 @@
                 <div class="form-group">
                     <label for="familyDetails">Family Details *</label>
                     <textarea id="familyDetails" name="familyDetails" required 
-                              placeholder="Please provide family details (e.g., spouse name, children names, parents names, etc.)"></textarea>
+                              placeholder="Please provide family details"></textarea>
                 </div>
 
                 <button type="submit" class="submit-btn">Book Saree</button>
@@ -297,7 +297,7 @@
         // Configuration - Replace with your Google Apps Script URLs
         const GOOGLE_SCRIPT_URLS = {
             GET_SAREES: 'https://script.google.com/macros/s/AKfycbzBj6lxNlZu3CjP7eZrIFBf2tfn2uJ2nzZVulQtDqw1UWfD-oqPYfr--fsRiSl58sg/exec',
-            SUBMIT_BOOKING: 'https://script.google.com/macros/s/AKfycbwPFozx3wqOcrn1li724zwvaykwTi-BQOyYY5uVaEEwle-qgg6NlMtfooQhFaI01MD3/exec'
+            SUBMIT_BOOKING: 'https://script.google.com/macros/s/AKfycbzEMMiL3XOnLX2I7tVVPbQdtP9e6Xq8F2vh3RR8l1bqFOvz8JWL_aGetPyJLwY3f1lv/exec'
         };
 
         // Store saree data and booked sarees
@@ -428,7 +428,7 @@
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Date</div>
-                        <div class="detail-value">${saree.date}</div>
+                        <div class="detail-value">${new Date(saree.date).toDateString()}</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Deity</div>
@@ -474,7 +474,7 @@
                     sareeCode: selectedSareeCode,
                     price: sareeData[selectedSareeCode].price,
                     day: sareeData[selectedSareeCode].day,
-                    date: sareeData[selectedSareeCode].date,
+                    date: new Date(sareeData[selectedSareeCode].date).toDateString(),
                     deity: sareeData[selectedSareeCode].deity,
                     familyDetails: formData.get('familyDetails')
                 };
