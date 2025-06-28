@@ -17,6 +17,7 @@
             background: linear-gradient(135deg, #ffb347 0%, #f12711 100%);
             min-height: 100vh;
             padding: 20px;
+            color: navy;
         }
 
         .container {
@@ -29,37 +30,23 @@
         }
 
         .header {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            height: 300px;
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
+            color: navy;
             padding: 30px;
             text-align: center;
         }
 
-        .header h2 {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .logo-round img {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 15px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-
+        .header h2,
         .header h1 {
-            font-size: 2.2em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            line-height: 1.2;
+            color: navy;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .form-container {
@@ -68,13 +55,14 @@
 
         .form-group {
             margin-bottom: 25px;
+            animation: fadeInUp 0.6s ease forwards;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #333;
+            color: navy;
             font-size: 1.1em;
         }
 
@@ -114,7 +102,7 @@
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
-            color: white;
+            color: navy;
             min-height: 60px;
             display: none;
             align-items: center;
@@ -138,31 +126,18 @@
             min-height: 0;
         }
 
-
-
-
-
-
-        .detail-item {
-            text-align: center;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-        }
-
-
         .detail-label {
             font-size: 0.9em;
             opacity: 0.8;
             margin-bottom: 5px;
+            color: navy;
         }
 
         .detail-value {
             font-size: 1.2em;
             font-weight: bold;
+            color: navy;
         }
-
 
         .submit-btn {
             background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
@@ -205,7 +180,7 @@
 
         .refresh-btn {
             background: linear-gradient(135deg, #ffb347 0%, #ffa726 100%);
-            color: #333;
+            color: navy;
             padding: 10px 20px;
             border: none;
             border-radius: 20px;
@@ -230,10 +205,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        .form-group {
-            animation: fadeInUp 0.6s ease forwards;
         }
 
         .form-group:nth-child(1) {
@@ -264,7 +235,6 @@
             animation-delay: 0.7s;
         }
 
-        /* Responsive enhancements */
         @media (max-width: 600px) {
             .form-container {
                 padding: 20px;
@@ -272,20 +242,16 @@
 
             .header {
                 padding: 20px;
+                height: 256px;
             }
 
             .header h2 {
                 font-size: 1.4em;
             }
 
-            .logo-round img,
             .header img {
                 width: 60px;
                 height: 60px;
-            }
-
-            .details-grid {
-                grid-template-columns: 1fr;
             }
 
             .submit-btn {
@@ -298,7 +264,6 @@
             }
         }
 
-        /* Scalable typography */
         .header h1,
         .header h2 {
             font-size: clamp(1.2rem, 4vw, 2rem);
@@ -308,28 +273,11 @@
 
 <body>
     <div class="container">
-        <div class="header"
-            style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px;">
 
-            <div style="display: flex; align-items: center; justify-content: center; gap: 24px;">
-                <div class="logo-round" style="display: flex; align-items: center; justify-content: center;">
-                    <img src="sai-mandir-usa-ny.png" alt="Sai Mandir USA NY Logo"
-                        style="background: none; background-color: #e3e2e2; border: 2px solid rgba(255,255,255,0.3); display: block;"
-                        onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'color: #ff8c42; font-weight: bold; font-size: 14px;\'>LOGO</div>'">
-                </div>
-                <div style="display: flex; align-items: center; justify-content: center; height: 80px;">
-                    <img src="shirdisainj-logo.png"
-                        style="max-height: 60px; max-width: 256px; display: block; margin: 0 auto; background: none; border: 2px solid rgba(255,255,255,0.3);"
-                        alt="Sai Mandir USA NY Logo"
-                        onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'color: #ff8c42; font-weight: bold; font-size: 14px;\'>LOGO</div>'">
-                </div>
-                <div class="logo-round" style="display: flex; align-items: center; justify-content: center;">
-                    <img src="durga-maa.png" alt="Durga Maa Logo"
-                        style="background: none; background-color: #e3e2e2; border: 2px solid rgba(255,255,255,0.3); display: block;"
-                        onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'color: #ff8c42; font-weight: bold; font-size: 14px;\'>LOGO</div>'">
-                </div>
-            </div>
-            <h2>Dussehra Pooja Sponsorship <br> Ammavari Vastra Samarpana 2025</h2>
+        <div class="header"
+            style="width: 100%; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; height: 300px;">
+            <img src="logo.jpg" alt="Logo"
+                style="width: 100%; height: 100%; object-fit: fill; display: block; position: absolute; top: 0; left: 0;" />
         </div>
 
         <div class="form-container">
