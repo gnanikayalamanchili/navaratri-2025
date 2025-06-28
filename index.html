@@ -462,26 +462,37 @@
 
             const saree = sareeData[code];
             detailsDiv.innerHTML = `
-               <table style="width: 100%; border-collapse: collapse; text-align: center;">
+               <table style="width: 100%; border-collapse: collapse; ">
     <tr>
-        <td style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-            <div class="detail-label">Price</div>
-            <div class="detail-value">${saree.price}</div>
+                <td style="padding: 3px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+            <div class="detail-label">Deity</div>
+            <div class="detail-value">${saree.deity}</div>
         </td>
-        <td style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+        
+        <td style="padding: 3px; background: rgba(255,255,255,0.1); border-radius: 8px;">
             <div class="detail-label">Day</div>
             <div class="detail-value">${saree.day}</div>
         </td>
     </tr>
     <tr>
-        <td style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+        <td style="padding: 3px; background: rgba(255,255,255,0.1); border-radius: 8px;">
             <div class="detail-label">Date</div>
-            <div class="detail-value">${new Date(saree.date).toDateString()}</div>
+            <div class="detail-value">${
+                (() => {
+                    const d = new Date(saree.date);
+                    const day = d.toLocaleDateString('en-US', { weekday: 'short' });
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    const dd = String(d.getDate()).padStart(2, '0');
+                    const yyyy = d.getFullYear();
+                    return `(${day}) ${mm}-${dd}-${yyyy}`;
+                })()
+            }</div>
         </td>
-        <td style="padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-            <div class="detail-label">Deity</div>
-            <div class="detail-value">${saree.deity}</div>
+        <td style="padding: 3px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+            <div class="detail-label">Price</div>
+            <div class="detail-value">$ ${saree.price}</div>
         </td>
+
     </tr>
 </table>
 
