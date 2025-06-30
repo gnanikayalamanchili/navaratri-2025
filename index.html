@@ -532,11 +532,11 @@
                     phone: formData.get('phone'),
                     email: formData.get('email'),
                     gotram: formData.get('gotram'),
-                    sareeCode: selectedSareeCode, // send as string
-                    price: Number(sareeData[selectedSareeCode].price), // Ensure price is a number
-                    day: sareeData[selectedSareeCode].day,
+                    sareeCode: String(selectedSareeCode), // ensure string
+                    price: String(sareeData[selectedSareeCode].price), // ensure string
+                    day: String(sareeData[selectedSareeCode].day),
                     date: new Date(sareeData[selectedSareeCode].date).toDateString(),
-                    deity: sareeData[selectedSareeCode].deity,
+                    deity: String(sareeData[selectedSareeCode].deity),
                     familyDetails: formData.get('familyDetails')
                 };
 
