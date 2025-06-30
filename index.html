@@ -525,23 +525,32 @@
             submitBtn.textContent = 'Submitting...';
 
             try {
-                // Prepare data for Google Sheets
+                // Prepare data for Google Sheets and Salesforce
                 const bookingData = {
                     timestamp: new Date().toLocaleString(),
                     name: formData.get('name'),
                     phone: formData.get('phone'),
                     email: formData.get('email'),
                     gotram: formData.get('gotram'),
-                    sareeCode: String(selectedSareeCode), // ensure string
-                    price: String(sareeData[selectedSareeCode].price), // ensure string
+                    sareeCode: String(selectedSareeCode),
+                    price: String(sareeData[selectedSareeCode].price),
                     day: String(sareeData[selectedSareeCode].day),
                     date: new Date(sareeData[selectedSareeCode].date).toDateString(),
                     deity: String(sareeData[selectedSareeCode].deity),
                     familyDetails: formData.get('familyDetails')
                 };
 
-                // Use a different approach for form submission to avoid CORS issues
+                // 1. Submit to Salesforce
                 await submitFormData(bookingData);
+
+                // 2. Submit to Google Sheets
+                await fetch(GOOGLE_SCRIPT_URLS.SUBMIT_BOOKING, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bookingData)
+                });
 
                 // Add to booked sarees locally
                 bookedSarees.push(selectedSareeCode);
