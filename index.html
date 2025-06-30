@@ -532,7 +532,7 @@
                     phone: formData.get('phone'),
                     email: formData.get('email'),
                     gotram: formData.get('gotram'),
-                    sareeCode: selectedSareeCode,
+                    sareeCode: Number(selectedSareeCode),
                     price: Number(sareeData[selectedSareeCode].price), // Ensure price is a number
                     day: sareeData[selectedSareeCode].day,
                     date: new Date(sareeData[selectedSareeCode].date).toDateString(),
