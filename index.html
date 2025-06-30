@@ -586,19 +586,13 @@
                 body: JSON.stringify(data)
             });
 
-            const text = await response.text();
-            console.log('Raw response:', text);
-            let result;
-            try {
-                result = JSON.parse(text);
-            } catch (e) {
-                throw new Error('Invalid JSON response from server');
-            }
+            const result = await response.json();
+
+            console.log('Salesforce response:', result);
+
             if (result.result !== 'success') {
-                throw new Error(result.message || 'Salesforce error');
+                throw new Error(result.message || 'Salesforce insert failed');
             }
-            // Redirect after successful booking
-            window.location.href = "https://your-success-page-link.com"; // <-- Change this to your desired URL
         }
 
         // Initialize when page loads
