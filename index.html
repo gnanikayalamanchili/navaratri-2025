@@ -276,7 +276,7 @@
 
         <div class="header"
             style="width: 100%; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; height: 300px;">
-            <img src="logo.jpg" alt="Logo"
+            <img src="logo1.jpg" alt="Logo"
                 style="width: 100%; height: 100%; object-fit: fill; display: block; position: absolute; top: 0; left: 0;" />
         </div>
 
@@ -304,9 +304,7 @@
 
                 <div class="form-group">
                     <label for="phone">Phone Number *</label>
-                    <input type="tel" id="phone" name="phone" required pattern="[0-9]{10,}" inputmode="numeric"
-                        maxlength="15"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    <input type="tel" id="phone" name="phone" required>
                 </div>
 
                 <div class="form-group">
@@ -535,7 +533,7 @@
                     email: formData.get('email'),
                     gotram: formData.get('gotram'),
                     sareeCode: selectedSareeCode,
-                    price: sareeData[selectedSareeCode].price,
+                    price: Number(sareeData[selectedSareeCode].price), // Ensure price is a number
                     day: sareeData[selectedSareeCode].day,
                     date: new Date(sareeData[selectedSareeCode].date).toDateString(),
                     deity: sareeData[selectedSareeCode].deity,
@@ -578,41 +576,29 @@
 
         // Alternative form submission method to handle CORS issues
         async function submitFormData(data) {
-            return new Promise((resolve, reject) => {
-                // Create a hidden form for submission
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = GOOGLE_SCRIPT_URLS.SUBMIT_BOOKING;
-                form.style.display = 'none';
+            const SALESFORCE_API_URL = "https://shiridisainj-uat.force.com/bookingportal/services/apexrest/SareeBookingAPI/";
 
-                // Add data as hidden inputs
-                Object.keys(data).forEach(key => {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = key;
-                    input.value = data[key];
-                    form.appendChild(input);
-                });
-
-                // Create hidden iframe for form submission
-                const iframe = document.createElement('iframe');
-                iframe.name = 'hidden_iframe';
-                iframe.style.display = 'none';
-                iframe.onload = function () {
-                    // Form submitted successfully
-                    setTimeout(() => {
-                        document.body.removeChild(form);
-                        document.body.removeChild(iframe);
-                        resolve();
-                    }, 1000);
-                };
-
-                form.target = 'hidden_iframe';
-
-                document.body.appendChild(iframe);
-                document.body.appendChild(form);
-                form.submit();
+            const response = await fetch(SALESFORCE_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             });
+
+            const text = await response.text();
+            console.log('Raw response:', text);
+            let result;
+            try {
+                result = JSON.parse(text);
+            } catch (e) {
+                throw new Error('Invalid JSON response from server');
+            }
+            if (result.result !== 'success') {
+                throw new Error(result.message || 'Salesforce error');
+            }
+            // Redirect after successful booking
+            window.location.href = "https://your-success-page-link.com"; // <-- Change this to your desired URL
         }
 
         // Initialize when page loads
